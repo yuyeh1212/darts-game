@@ -4,24 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>射箭遊戲</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="infos">
-      <h1 class="score">Score: 0</h1>
-      <h3 class="explain">重新開始 R , 變換模式 K</h3>
-    </div>
+    <div class="game-container">
+      <div class="hud">
+        <h1 class="score">分數: 0</h1>
+        <div class="stats">
+          <div>最高分: <span class="high-score">0</span></div>
+          <div>剩餘箭矢: <span class="arrows-left">10</span></div>
+          <div>連擊: <span class="combo">0</span></div>
+        </div>
+      </div>
 
-    <div class="target">
-      <div class="cir1" data-label="5"></div>
-      <div class="cir2" data-label="4"></div>
-      <div class="cir3" data-label="3"></div>
-      <div class="cir4" data-label="2"></div>
-      <div class="cir5" data-label="1"></div>
-    </div>
+      <div class="controls">
+        <div><strong>R</strong> - 重新開始</div>
+        <div><strong>K</strong> - 移動模式</div>
+        <div><strong>空白鍵</strong> - 暫停/繼續</div>
+      </div>
 
-    <div class="mouseSymbol"></div>
-    <h3 class="mouseText"></h3>
+      <div class="target">
+        <div class="ring5">
+          <span class="ring-label">1</span>
+        </div>
+        <div class="ring4">
+          <span class="ring-label">2</span>
+        </div>
+        <div class="ring3">
+          <span class="ring-label">5</span>
+        </div>
+        <div class="ring2">
+          <span class="ring-label">8</span>
+        </div>
+        <div class="ring1">
+          <span class="ring-label">10</span>
+        </div>
+      </div>
+
+      <div class="crosshair">
+        <div class="crosshair-center"></div>
+      </div>
+
+      <div class="game-over">
+        <h2>遊戲結束！</h2>
+        <p>最終分數: <span class="final-score">0</span></p>
+        <p>最高分: <span class="final-high-score">0</span></p>
+        <button onclick="resetGame()">再玩一次</button>
+      </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="./script.js"></script>

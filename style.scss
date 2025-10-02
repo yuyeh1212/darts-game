@@ -1,14 +1,23 @@
 * {
   box-sizing: border-box;
+  user-select: none;
 }
 
-html,
 body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow: hidden;
+  font-family: "Arial", sans-serif;
+  cursor: none;
+}
+
+.game-container {
+  position: relative;
   width: 100%;
   height: 100%;
-  margin: 0;
-  background-color: #eaeaea;
-  overflow: hidden;
 }
 
 .target {
@@ -16,146 +25,265 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
 }
 
 .target.moving {
-  animation: moving 1s infinite alternate;
+  animation: moving 2s ease-in-out infinite alternate;
 }
 
 @keyframes moving {
   0% {
-    transform: translate(-200px, -50%);
+    transform: translate(-300px, -50%);
   }
   100% {
-    transform: translate(200px, -50%);
+    transform: translate(300px, -50%);
   }
 }
 
-[class^="cir"] {
-  width: 500px;
-  height: 500px;
+[class^="ring"] {
   border-radius: 50%;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  transition: 0.5s;
-  background-color: white;
-  cursor: pointer;
+  cursor: crosshair;
+  transition: filter 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-[class^="cir"]:nth-child(2n + 1) {
-  background-color: #fe5b45;
+[class^="ring"]:hover {
+  filter: brightness(1.1);
 }
 
-[class^="cir"]:active {
-  transition: 0s;
-  filter: brightness(80%);
+[class^="ring"]:active {
+  filter: brightness(0.9);
 }
 
-[class^="cir"]:before {
-  content: attr(data-label);
+.ring-label {
   position: absolute;
-  left: 50%;
-  top: 20px;
-  transform: translate(-50%, 0);
-  font-size: 24px;
+  top: 15%;
+  font-size: 28px;
   font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
 }
 
-.cir1 {
+.ring1 {
   width: 100px;
   height: 100px;
+  background: radial-gradient(circle, #ffd700, #ffa500);
   z-index: 5;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
 }
 
-.cir2 {
-  width: 200px;
-  height: 200px;
+.ring2 {
+  width: 180px;
+  height: 180px;
+  background: #e74c3c;
   z-index: 4;
 }
 
-.cir3 {
-  width: 300px;
-  height: 300px;
+.ring3 {
+  width: 260px;
+  height: 260px;
+  background: #3498db;
   z-index: 3;
 }
 
-.cir4 {
-  width: 400px;
-  height: 400px;
+.ring4 {
+  width: 340px;
+  height: 340px;
+  background: #2ecc71;
   z-index: 2;
 }
 
-.cir5 {
-  width: 500px;
-  height: 500px;
+.ring5 {
+  width: 420px;
+  height: 420px;
+  background: white;
   z-index: 1;
-  border: 10px solid white;
-  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.3);
-}
-
-.infos {
-  position: fixed;
-  left: 50px;
-  bottom: 50px;
-  z-index: 10;
-}
-
-.infos h1,
-.infos h3 {
-  margin: 0;
-}
-
-.infos h1 {
-  font-size: 50px;
-}
-
-.infos h3 {
-  opacity: 0.4;
-}
-
-.mouseSymbol {
-  position: absolute;
-  pointer-events: none;
-  z-index: 100;
-}
-
-.mouseSymbol:before,
-.mouseSymbol:after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 8px;
-  background-color: #222;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-}
-
-.mouseSymbol:before {
-  transform: translate(-50%, -50%) rotate(0deg);
-}
-
-.mouseSymbol:after {
-  transform: translate(-50%, -50%) rotate(90deg);
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
 }
 
 .spot {
   position: absolute;
-  width: 15px;
-  height: 15px;
-  pointer-events: none;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background: radial-gradient(circle, #2c3e50, #34495e);
+  border: 2px solid #ecf0f1;
+  pointer-events: none;
   z-index: 50;
+  animation: spotAppear 0.3s ease-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.mouseText {
+@keyframes spotAppear {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.score-popup {
+  position: absolute;
+  font-size: 36px;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 100;
+  animation: scoreFloat 1s ease-out forwards;
+}
+
+@keyframes scoreFloat {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -100px) scale(1);
+    opacity: 0;
+  }
+}
+
+.hud {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  margin: 0;
-  font-family: monospace;
-  opacity: 0.5;
+  top: 30px;
+  left: 30px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.hud h1 {
+  margin: 0 0 10px 0;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.hud .stats {
+  font-size: 18px;
+  opacity: 0.9;
+  margin: 5px 0;
+}
+
+.controls {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  color: white;
+  font-size: 16px;
+  opacity: 0.7;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.controls div {
+  margin: 5px 0;
+}
+
+.crosshair {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+}
+
+.crosshair::before,
+.crosshair::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.crosshair::before {
+  width: 30px;
+  height: 2px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.crosshair::after {
+  width: 2px;
+  height: 30px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.crosshair-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  background: red;
+  border-radius: 50%;
+}
+
+.game-over {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  display: none;
+  z-index: 1001;
+}
+
+.game-over.show {
+  display: block;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.game-over h2 {
+  margin: 0 0 20px 0;
+  font-size: 36px;
+}
+
+.game-over button {
+  margin-top: 20px;
+  padding: 12px 30px;
+  font-size: 18px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.game-over button:hover {
+  background: #5568d3;
 }
