@@ -1,8 +1,15 @@
 let score = 0;
-let highScore = parseInt(localStorage.getItem("archeryHighScore")) || 0;
+let highScore = parseInt(localStorage.getItem("dartsHighScore")) || 0;
 let arrowsLeft = 10;
 let combo = 0;
 let isPaused = false;
+let currentDifficulty = "normal";
+
+const difficultySpeeds = {
+  easy: 4,
+  normal: 2,
+  hard: 1,
+};
 
 const scoreValues = {
   ring1: 10,
@@ -29,7 +36,7 @@ function showScorePopup(x, y, points) {
 function endGame() {
   if (score > highScore) {
     highScore = score;
-    localStorage.setItem("archeryHighScore", highScore);
+    localStorage.setItem("dartsHighScore", highScore);
   }
   $(".final-score").text(score);
   $(".final-high-score").text(highScore);
@@ -79,6 +86,17 @@ $("[class^=ring]").click(function (evt) {
   }
 });
 
+function setDifficulty(level) {
+  currentDifficulty = level;
+  $(".difficulty-btn").removeClass("active");
+  $(`.difficulty-btn[data-difficulty="${level}"]`).addClass("active");
+  $(".target").css("animation-duration", difficultySpeeds[level] + "s");
+}
+
+$(".difficulty-btn").click(function () {
+  setDifficulty($(this).data("difficulty"));
+});
+
 $(".target").click(function (evt) {
   if ($(evt.target).is("[class^=ring]")) return;
   combo = 0;
@@ -111,4 +129,5 @@ $(window).mousemove(function (evt) {
 });
 
 // 初始化
+setDifficulty(currentDifficulty);
 updateDisplay();
