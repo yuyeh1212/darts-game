@@ -53,12 +53,7 @@ function resetGame() {
   updateDisplay();
 }
 
-$("[class^=ring]").click(function (evt) {
-  if (isPaused || arrowsLeft <= 0) return;
-
-  evt.stopPropagation();
-
-  const ringClass = $(this).attr("class").split(" ")[0];
+function registerHit(el, ringClass, evt) {
   const points = scoreValues[ringClass];
   const bonusPoints = points * (1 + combo * 0.1);
   const finalPoints = Math.floor(bonusPoints);
@@ -72,18 +67,31 @@ $("[class^=ring]").click(function (evt) {
 
   // 添加箭矢標記
   const spot = $('<div class="spot"></div>');
-  const offsetX = evt.pageX - $(this).offset().left;
-  const offsetY = evt.pageY - $(this).offset().top;
+  const offsetX = evt.pageX - $(el).offset().left;
+  const offsetY = evt.pageY - $(el).offset().top;
   spot.css({
     left: offsetX + "px",
     top: offsetY + "px",
     transform: "translate(-50%, -50%)",
   });
-  $(this).append(spot);
+  $(el).append(spot);
 
   if (arrowsLeft <= 0) {
     setTimeout(endGame, 500);
   }
+}
+
+$("[class^=ring]").click(function (evt) {
+  if (isPaused || arrowsLeft <= 0) return;
+  evt.stopPropagation();
+  const ringClass = $(this).attr("class").split(" ")[0];
+  registerHit(this, ringClass, evt);
+});
+
+$(".target-hitzone").click(function (evt) {
+  if (isPaused || arrowsLeft <= 0) return;
+  evt.stopPropagation();
+  registerHit(this, "ring5", evt);
 });
 
 function setDifficulty(level) {

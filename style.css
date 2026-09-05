@@ -40,6 +40,17 @@ body {
     transform: translate(300px, -50%);
   }
 }
+.target-hitzone {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 540px;
+  height: 540px;
+  border-radius: 50%;
+  cursor: crosshair;
+}
+
 [class^=ring] {
   border-radius: 50%;
   position: absolute;
